@@ -26,11 +26,13 @@ Geosona aims to visualize music as a truly global phenomenon, showing how artist
 
 ### Backend (Planned)
 - **Python + FastAPI** - High-performance API server
-- **Neo4j** - Graph database for artist relationships (influences, collaborations)
-- **PostgreSQL + PostGIS** - Geospatial data for artist locations and map features
 
 ### Data Pipeline (Planned)
 - **Python ETL scripts** - Data extraction and transformation
+
+### Database
+- **Neo4j** - Graph database for artist relationships (influences, collaborations)
+- **PostgreSQL + PostGIS** - Geospatial data for artist locations and map features
 
 ### Infrastructure
 - **Docker + Docker Compose** - Containerization and orchestration
@@ -42,7 +44,7 @@ geosona/
 ├── frontend/           # React + MapLibre application
 ├── backend/            # FastAPI server (planned)
 ├── data-pipeline/      # ETL scripts (planned)
-├── database/           # DB schemas and migrations (planned)
+├── database/           # DB schemas and migrations
 ├── infrastructure/     # Docker configs (planned)
 ├── docs/               # Documentation
 └── TODO.md             # Project roadmap

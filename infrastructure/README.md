@@ -1,57 +1,85 @@
 # Infrastructure
 
-Docker configuration for Geosona services.
+Docker Compose configuration for Geosona services.
 
 ## Quick Start
 
-1. Copy the environment file:
+1. Set required environment variables:
    ```bash
-   cp .env.example .env
+   export POSTGRES_PASSWORD="your-secure-password"
+   export NEO4J_PASSWORD="your-secure-password"
    ```
 
-2. Edit `.env` and set a secure password for `POSTGRES_PASSWORD`
-
-3. Start the database:
+2. Start all services:
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 
-4. Verify PostGIS is installed:
+3. Load Neo4j sample data:
    ```bash
-   docker exec -it geosona-postgres psql -U geosona_user -d geosona -c "SELECT PostGIS_version();"
+   docker exec -it geosona-neo4j cypher-shell -u neo4j -p $NEO4J_PASSWORD -f /import/01-artist-influences.cypher
    ```
 
 ## Services
 
 ### PostgreSQL + PostGIS
 - **Image**: `postgis/postgis:17-3.5`
-- **Port**: 5432
-- **Database**: geosona
-- **User**: geosona_user
-- **Password**: Set in `.env` file
+- **Container**: `geosona-postgres`
+- **Ports**: 5432
+- **Volumes**: `postgres_data`, initialization scripts from `../database/postgres/init/`
+- **Health check**: `pg_isready`
 
-## Database Management
+### Neo4j
+- **Image**: `neo4j:5.26.19-community`
+- **Container**: `geosona-neo4j`
+- **Ports**: 7474 (HTTP), 7687 (Bolt)
+- **Volumes**: `neo4j_data`, `neo4j_logs`, initialization scripts from `../database/neo4j/init/`
+- **Plugins**: APOC
+- **Health check**: `cypher-shell`
 
-### Connect to database
+## Management Commands
+
+### Start services
 ```bash
-docker exec -it geosona-postgres psql -U geosona_user -d geosona
+docker compose up -d
 ```
 
 ### Stop services
 ```bash
-docker-compose down
+docker compose stop
 ```
 
-### Stop and remove data
+### Stop and remove containers (keeps data)
 ```bash
-docker-compose down -v
+docker compose down
+```
+
+### Stop and remove all data
+```bash
+docker compose down -v
 ```
 
 ### View logs
 ```bash
-docker-compose logs -f postgres
+docker compose logs -f postgres
+docker compose logs -f neo4j
 ```
 
-## Initialization Scripts
+### Check health status
+```bash
+docker ps
+```
 
-SQL scripts in `../database/postgres/init/` are automatically executed when the database is first created, in alphabetical order.
+### Run health checks manually
+```bash
+docker exec geosona-postgres pg_isready -U geosona_user -d geosona
+docker exec geosona-neo4j cypher-shell -u neo4j -p $NEO4J_PASSWORD 'RETURN 1'
+```
+
+## Environment Variables
+
+Required environment variables:
+- `POSTGRES_PASSWORD` - Password for PostgreSQL user
+- `NEO4J_PASSWORD` - Password for Neo4j user
+
+These must be set before running `docker compose up`.

@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_DB: geosona
       POSTGRES_USER: geosona_user
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -17,5 +17,28 @@ services:
       timeout: 5s
       retries: 5
 
+  neo4j:
+    image: neo4j:5.26.19-community
+    container_name: geosona-neo4j
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+      EXTENSION_SCRIPT: /var/lib/neo4j/import
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - ../database/neo4j/init:/import:ro
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p ${NEO4J_PASSWORD} 'RETURN 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
+  neo4j_data:
+  neo4j_logs:

@@ -1,3 +1,6 @@
+-- PostgreSQL + PostGIS initialization script
+-- This script runs automatically when the database is first created
+
 -- Enable PostGIS extension
 CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE EXTENSION IF NOT EXISTS postgis_topology;

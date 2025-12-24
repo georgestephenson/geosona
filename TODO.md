@@ -18,9 +18,6 @@
 
 ### Docker Compose Orchestration
 - Update infrastructure/docker-compose.yml with all services:
-  - PostgreSQL + PostGIS
-  - Neo4j
-  - Backend (Python/FastAPI)
   - Frontend (Nginx serving static build)
 - Set up service dependencies and networking
 - Configure volume persistence for databases

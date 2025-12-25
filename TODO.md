@@ -1,9 +1,5 @@
 # TODO
 
-## Documentation 
-
-- Add ARCHITECTURE.md
-
 ## Testing
 
 ### Future: Add Playwright for E2E Testing
@@ -12,6 +8,8 @@
 - Set up in CI/CD pipeline
 
 ## Deployment & Infrastructure
+
+### GitHub Actions and Deployment
 
 ### Docker Compose Orchestration
 - Update infrastructure/docker-compose.yml with all services:

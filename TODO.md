@@ -1,5 +1,9 @@
 # TODO
 
+## Documentation 
+
+- Add ARCHITECTURE.md
+
 ## Testing
 
 ### Future: Add Playwright for E2E Testing

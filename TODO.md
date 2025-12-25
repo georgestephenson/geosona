@@ -13,13 +13,6 @@
 
 ## Deployment & Infrastructure
 
-### Frontend Docker Setup
-- Create multi-stage Dockerfile (build → nginx)
-- Create nginx.conf for SPA routing and asset caching
-- Add .dockerignore file
-- Configure environment variables (.env for VITE_API_URL)
-- Note: Use Docker for production builds only, run `pnpm dev` locally for development
-
 ### Docker Compose Orchestration
 - Update infrastructure/docker-compose.yml with all services:
   - Frontend (Nginx serving static build)

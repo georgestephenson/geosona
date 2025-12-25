@@ -1,0 +1,44 @@
+[project]
+name = "geosona-pipeline"
+version = "0.1.0"
+description = "ETL pipeline for geosona music artist data"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31.0",
+    "musicbrainzngs>=0.7.1",
+    "neo4j>=5.15.0",
+    "psycopg2-binary>=2.9.9",
+    "GeoAlchemy2>=0.14.3",
+    "SQLAlchemy>=2.0.23",
+    "pandas>=2.1.4",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.3",
+    "pydantic-settings>=2.1.0",
+    "structlog>=24.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "responses>=0.24.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["config", "extractors", "models", "transformers", "loaders", "scripts", "utils"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=extractors --cov=models --cov=scripts --cov-report=html --cov-report=term"
+markers = [
+    "integration: marks tests that require network access to external APIs (deselect with '-m \"not integration\"')",
+]
